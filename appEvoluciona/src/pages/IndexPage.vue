@@ -12,7 +12,9 @@
 <script setup lang="ts">
 import { Todo, Meta } from 'components/models';
 import ExampleComponent from 'components/ExampleComponent.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue'
+import { api } from 'src/boot/axios';
+
 
 const todos = ref<Todo[]>([
   {
@@ -39,4 +41,29 @@ const todos = ref<Todo[]>([
 const meta = ref<Meta>({
   totalCount: 1200
 });
+
+// function async login(){
+//             this.processing = true
+//             await axios.get('/sanctum/csrf-cookie')
+//             await axios.post('/login',this.auth).then(({data})=>{
+//                 this.signIn()
+//             }).catch(({response})=>{
+//                 if(response.status===422){
+//                     this.validationErrors = response.data.errors
+//                 }else{
+//                     this.validationErrors = {}
+//                     alert(response.data.message)
+//                 }
+//             }).finally(()=>{
+//                 this.processing = false
+//             })
+//         },
+onMounted(async (): Promise<void> => {
+    await api.get('/sanctum/csrf-cookie')
+    await api.post('/login', {'email':'test@example.com', 'password':'password'})
+    return console.log('me')
+  });
+
+
 </script>
+
